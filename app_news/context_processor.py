@@ -9,7 +9,6 @@ def common_views(request):
     context = {
         "latest_news": latest_news,
         "popular_news": popular_news,
-        "category_list": category_list,
-        "today": 1
+        "category_list": category_list
     }
     return context

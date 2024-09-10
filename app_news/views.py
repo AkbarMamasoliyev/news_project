@@ -77,12 +77,12 @@ class CategoryPageView(TemplateView):
             news_first__half = []
             news_second__half = news_items[1:]
 
-        context = {
+        context.update({
             "category": category,
             "news_main": news_main,
             "news_first__half": news_first__half,
             "news_second__half": news_second__half
-        }
+        })
         return context
 
 
@@ -105,13 +105,13 @@ class NewsList(ListView):
             news_list__second_half = news_item[1:]
 
 
-        context = {
+        context.update({
             "news_list": news_item,
             "news_list__main": news_list__main,
             "news_list__first_half": news_list__first_half,
             "news_list__second_half": news_list__second_half,
             'news_list__all': news_list__all
-        }
+        })
         return context
 
 

@@ -2,6 +2,7 @@ from django.utils import timezone
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
+import os
 
 
 class PublishedManager(models.Manager):
@@ -39,13 +40,7 @@ class News(models.Model):
     def __str__(self):
         return self.title
 
-    def get_absolute_url(self):
-        return reverse("single_page", args=[self.slug])
 
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title)
-        super().save(*args, **kwargs)
 
 
 
@@ -81,7 +76,7 @@ class Authors(models.Model):
 class Contact(models.Model):
     name = models.CharField(max_length=50)
     email = models.EmailField(max_length=150)
-    message = models.TextField
+    message = models.TextField(null=True)
 
     class Meta:
         verbose_name_plural = 'Contact'

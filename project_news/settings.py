@@ -64,7 +64,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'app_news.context_processor.common_views',
-                'app_news.templatetags.custom_filters.cut_until_dot'
             ],
         },
     },

@@ -33,6 +33,7 @@
               <li><a href="{% url 'home_page' %}">Home</a></li>
               <li><a href="#">About</a></li>
               <li><a href="{% url 'contact_page' %}">Contact</a></li>
+              <li><a href="{% url 'admin:index' %}">Admin</a></li>
             </ul>
           </div>
           <div class="header_top_right">
@@ -96,7 +97,7 @@
             <div class="left_content">
                 <div class="single_post_content">
                     <<div class="single_post_content">
-                    <h2><a href="{% url 'category_page' 'uzbekiston' %}"><span>{{ category.name }}</span></a></h2>
+                    <h2><a href="{% url 'category_page' category.slug %}"><span>{{ category.name }}</span></a></h2>
                     <div class="single_post_content_left">
                       <ul class="business_catgnav  wow fadeInDown">
                         <li>
