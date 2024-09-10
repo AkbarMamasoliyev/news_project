@@ -73,7 +73,7 @@
         <div class="latest_newsarea"><a href="{% url 'news_list' %}"><span>Latest News</span></a>
           <ul id="ticker01" class="news_sticker">
               {% for news in latest_news %}
-            <li><a href="{% url 'single_page' news.slug %}"><img src="{{ news.image }}" alt="">{{ news.title }}</a></li>
+            <li><a href="{% url 'single_page' news.slug %}"><img src="{{ news.image.url }}" alt="">{{ news.title }}</a></li>
               {% endfor %}
           </ul>
           <div class="social_area">
@@ -97,7 +97,7 @@
       <div class="col-lg-8 col-md-8 col-sm-8">
         <div class="slick_slider">
             {% for news in main_news %}
-          <div class="single_iteam"> <a href="{% url 'single_page' news.slug %}"> <img src="{{ news.image }}" alt=""></a>
+          <div class="single_iteam"> <a href="{% url 'single_page' news.slug %}"> <img src="{{ news.image.url }}" alt=""></a>
             <div class="slider_article">
               <h2><a class="slider_tittle" href="{% url 'single_page' news.slug %}">{{ news.title }}</a></h2>
               <p>{{ news.body | cut_until_dot }}</p>
@@ -114,7 +114,7 @@
             <ul class="latest_postnav">
                 {% for news in popular_news %}
               <li>
-                <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image }}"> </a>
+                <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
                   <div class="media-body"> <a href="{% url 'single_page' news.slug %}" class="catg_title">{{ news.title }}</a> </div>
                 </div>
               </li>
@@ -135,7 +135,7 @@
             <div class="single_post_content_left">
               <ul class="business_catgnav  wow fadeInDown">
                 <li>
-                  <figure class="bsbig_fig"> <a href="{% url 'single_page' uzbekiston_main.slug %}" class="featured_img"> <img alt="" src="{{ uzbekiston_main.image }}"> <span class="overlay"></span> </a>
+                  <figure class="bsbig_fig"> <a href="{% url 'single_page' uzbekiston_main.slug %}" class="featured_img"> <img alt="" src="{{ uzbekiston_main.image.url }}"> <span class="overlay"></span> </a>
                     <figcaption> <a href="{% url 'single_page' uzbekiston_main.slug %}">{{ uzbekiston_main.title }}</a> </figcaption>
                     <p>{{ uzbekiston_main.body | cut_until_dot}}</p>
                   </figure>
@@ -146,7 +146,7 @@
               <ul class="spost_nav">
                   {% for news in uzbekiston_side %}
                 <li>
-                  <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image }}"> </a>
+                  <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
                     <div class="media-body"> <a href="{% url 'single_page' news.slug %}" class="catg_title">{{ news.title }}</a> </div>
                   </div>
                 </li>
@@ -160,7 +160,7 @@
                 <h2><a href="{% url 'category_page' 'jahon' %}"><span>Jahon</span></a></h2>
                 <ul class="business_catgnav wow fadeInDown">
                   <li>
-                    <figure class="bsbig_fig"> <a href="{% url 'single_page' jahon_main.slug %}" class="featured_img"> <img alt="" src="{{ jahon_main.image }}"> <span class="overlay"></span> </a>
+                    <figure class="bsbig_fig"> <a href="{% url 'single_page' jahon_main.slug %}" class="featured_img"> <img alt="" src="{{ jahon_main.image.url }}"> <span class="overlay"></span> </a>
                       <figcaption> <a href="{% url 'single_page' jahon_main.slug %}">{{ jahon_main.title }}</a> </figcaption>
                       <p>{{ jahon_main.body | cut_until_dot }}</p>
                     </figure>
@@ -169,7 +169,7 @@
                 <ul class="spost_nav">
                     {% for news in jahon_side %}
                   <li>
-                    <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image }}"> </a>
+                    <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
                       <div class="media-body"> <a href="{% url 'single_page' news.slug %}" class="catg_title">{{ news.title }}</a> </div>
                     </div>
                   </li>
@@ -182,7 +182,7 @@
                 <h2><a href="{% url 'category_page' 'iqtisodiyot' %}"><span>Iqtisodiyot</span></a></h2>
                 <ul class="business_catgnav">
                   <li>
-                    <figure class="bsbig_fig wow fadeInDown"> <a href="{% url 'single_page' iqtisodiyot_main.slug %}" class="featured_img"> <img alt="" src="{{ iqtisodiyot_main.image }}"> <span class="overlay"></span> </a>
+                    <figure class="bsbig_fig wow fadeInDown"> <a href="{% url 'single_page' iqtisodiyot_main.slug %}" class="featured_img"> <img alt="" src="{{ iqtisodiyot_main.image.url }}"> <span class="overlay"></span> </a>
                       <figcaption> <a href="{% url 'single_page' iqtisodiyot_main.slug %}">{{ iqtisodiyot_main.title }}</a> </figcaption>
                       <p>{{ iqtisodiyot_main.title | cut_until_dot}}</p>
                     </figure>
@@ -191,7 +191,7 @@
                 <ul class="spost_nav">
                   {% for news in iqtisodiyot_side %}
                   <li>
-                    <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image }}"> </a>
+                    <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
                       <div class="media-body"> <a href="{% url 'single_page' news.slug %}" class="catg_title">{{ news.title }}</a> </div>
                     </div>
                   </li>
@@ -206,7 +206,7 @@
                 {% for news in photography%}
               <li>
                 <div class="photo_grid">
-                  <figure class="effect-layla"> <a class="fancybox-buttons" data-fancybox-group="button" href="{{ news.image }}" title="<a href='{% url 'single_page' news.slug %}'>{{ news.title }}</a>"> <img src="{{ news.image }}" alt=""/></a> </figure>
+                  <figure class="effect-layla"> <a class="fancybox-buttons" data-fancybox-group="button" href="{{ news.image.url }}" title="<a href='{% url 'single_page' news.slug %}'>{{ news.title }}</a>"> <img src="{{ news.image.url }}" alt=""/></a> </figure>
                 </div>
               </li>
                 {% endfor %}
@@ -217,7 +217,7 @@
             <div class="single_post_content_left">
               <ul class="business_catgnav">
                 <li>
-                  <figure class="bsbig_fig  wow fadeInDown"> <a class="featured_img" href="{% url 'single_page' sport_main.slug %}"> <img src="{{ sport_main.image }}" alt=""> <span class="overlay"></span> </a>
+                  <figure class="bsbig_fig  wow fadeInDown"> <a class="featured_img" href="{% url 'single_page' sport_main.slug %}"> <img src="{{ sport_main.image.url }}" alt=""> <span class="overlay"></span> </a>
                     <figcaption> <a href="{% url 'single_page' sport_main.slug %}">{{ sport_main.title }}</a> </figcaption>
                     <p>{{ sport_main.body | cut_until_dot }}</p>
                   </figure>
@@ -228,7 +228,7 @@
               <ul class="spost_nav">
                   {% for news in sport_side %}
                   <li>
-                    <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image }}"> </a>
+                    <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
                       <div class="media-body"> <a href="{% url 'single_page' news.slug %}" class="catg_title">{{ news.title }}</a> </div>
                     </div>
                   </li>
@@ -245,7 +245,7 @@
             <ul class="spost_nav">
                 {% for news in texnologiya %}
               <li>
-                <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image }}"> </a>
+                <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
                   <div class="media-body"> <a href="{% url 'single_page' news.slug %}" class="catg_title">{{ news.title }}</a> </div>
                 </div>
               </li>

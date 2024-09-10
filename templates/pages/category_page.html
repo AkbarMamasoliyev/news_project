@@ -72,7 +72,7 @@
         <div class="latest_newsarea"><a href="{% url 'news_list' %}"><span>Latest News</span></a>
           <ul id="ticker01" class="news_sticker">
              {% for news in latest_news %}
-            <li><a href="{% url 'single_page' news.slug %}"><img src="{{ news.image }}" alt="">{{ news.title }}</a></li>
+            <li><a href="{% url 'single_page' news.slug %}"><img src="{{ news.image.url }}" alt="">{{ news.title }}</a></li>
              {% endfor %}
           </ul>
           <div class="social_area">
@@ -101,7 +101,7 @@
                     <div class="single_post_content_left">
                       <ul class="business_catgnav  wow fadeInDown">
                         <li>
-                          <figure class="bsbig_fig"> <a href="{% url 'single_page' news_main.slug %}" class="featured_img"> <img alt="" src="{{ news_main.image }}"> <span class="overlay"></span> </a>
+                          <figure class="bsbig_fig"> <a href="{% url 'single_page' news_main.slug %}" class="featured_img"> <img alt="" src="{{ news_main.image.url }}"> <span class="overlay"></span> </a>
                             <figcaption> <a href="{% url 'single_page' news_main.slug %}">{{ news_main.title }}</a> </figcaption>
                             <p>{{ news_main.body | cut_until_dot}}</p>
                           </figure>
@@ -110,7 +110,7 @@
                       <ul class="spost_nav">
                         {% for news in news_first__half %}
                           <li>
-                            <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image }}"> </a>
+                            <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
                               <div class="media-body"> <a href="{% url 'single_page' news.slug %}" class="catg_title">{{ news.title }}</a> </div>
                             </div>
                           </li>
@@ -121,7 +121,7 @@
                       <ul class="spost_nav">
                           {% for news in news_second__half %}
                         <li>
-                          <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image }}"> </a>
+                          <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
                             <div class="media-body"> <a href="{% url 'single_page' news.slug %}" class="catg_title">{{ news.title }}</a> </div>
                           </div>
                         </li>
@@ -139,7 +139,7 @@
             <ul class="spost_nav">
               {% for news in popular_news %}
               <li>
-                <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image }}"> </a>
+                <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
                   <div class="media-body"> <a href="{% url 'single_page' news.slug %}" class="catg_title">{{ news.title }}</a> </div>
                 </div>
               </li>

@@ -71,7 +71,7 @@
         <div class="latest_newsarea"><a href="{% url 'news_list' %}"><span>Latest News</span></a>
           <ul id="ticker01" class="news_sticker">
              {% for news in latest_news %}
-            <li><a href="{% url 'single_page' news.slug %}"><img src="{{ news.image }}" alt="">{{ news.title }}</a></li>
+            <li><a href="{% url 'single_page' news.slug %}"><img src="{{ news.image.url }}" alt="">{{ news.title }}</a></li>
              {% endfor %}
           </ul>
           <div class="social_area">
@@ -113,7 +113,7 @@
             <ul class="spost_nav">
                {% for news in popular_news %}
               <li>
-                <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image }}"> </a>
+                <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
                   <div class="media-body"> <a href="{% url 'single_page' news.slug %}" class="catg_title">{{ news.title }}</a> </div>
                 </div>
               </li>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Single Page | Page</title>
+<title>{{ news_item.title | capfirst }}</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -71,7 +71,7 @@
         <div class="latest_newsarea"><a href="{% url 'news_list' %}"><span>Latest News</span></a>
           <ul id="ticker01" class="news_sticker">
              {% for news in latest_news %}
-            <li><a href="{% url 'single_page' news.slug %}"><img src="{{ news.image }}" alt="">{{ news.title }}</a></li>
+            <li><a href="{% url 'single_page' news.slug %}"><img src="{{ news.image.url }}" alt="">{{ news.title }}</a></li>
              {% endfor %}
           </ul>
           <div class="social_area">
@@ -101,7 +101,7 @@
             </ol>
             <h1>{{ news_item.title }}</h1>
             <div class="post_commentbox"> <a href="#"><i class="fa fa-user"></i>{{ news_item.author | capfirst }}</a> <span><i class="fa fa-calendar"></i>{{ news_item.published_time | date:'H:i / Y.m.d' }}</span> <a href="{% url 'category_page' news_item.category.slug %}"><i class="fa fa-tags"></i>{{ news_item.category | capfirst }}</a> </div>
-            <div class="single_page_content"> <img class="img-center" src="{{ news_item.image }}" alt="">
+            <div class="single_page_content"> <img class="img-center" src="{{ news_item.image.url }}" alt="">
               <p>{{ news_item.body }}</p>
               <blockquote> Donec volutpat nibh sit amet libero ornare non laoreet arcu luctus. Donec id arcu quis mauris euismod placerat sit amet ut metus. Sed imperdiet fringilla sem eget euismod. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque adipiscing, neque ut pulvinar tincidunt, est sem euismod odio, eu ullamcorper turpis nisl sit amet velit. Nullam vitae nibh odio, non scelerisque nibh. Vestibulum ut est augue, in varius purus. </blockquote>
               <ul>
@@ -141,7 +141,7 @@
               <ul class="spost_nav wow fadeInDown animated">
                   {% for news in single__related %}
                 <li>
-                  <div class="media"> <a class="media-left" href="{% url 'single_page' news.slug %}"> <img src="{{ news.image }}" alt=""> </a>
+                  <div class="media"> <a class="media-left" href="{% url 'single_page' news.slug %}"> <img src="{{ news.image.url }}" alt=""> </a>
                     <div class="media-body"> <a class="catg_title" href="single_page.html">{{ news.title }}</a> </div>
                   </div>
                 </li>
@@ -167,7 +167,7 @@
             <ul class="spost_nav">
               {% for news in popular_news %}
               <li>
-                <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image }}"> </a>
+                <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
                   <div class="media-body"> <a href="{% url 'single_page' news.slug %}" class="catg_title">{{ news.title }}</a> </div>
                 </div>
               </li>
