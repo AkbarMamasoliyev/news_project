@@ -1,4 +1,4 @@
-import time, requests, django, os
+import time, requests, django, os, io, hashlib, uuid
 
 from bs4 import BeautifulSoup
 from django.shortcuts import get_object_or_404
@@ -6,6 +6,11 @@ from django.utils.text import slugify
 from django.db import IntegrityError
 from django.utils import timezone
 from  datetime import date
+from PIL import Image
+from pathlib import Path
+from django.core.files.temp import NamedTemporaryFile
+from django.core.files import File
+
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project_news.settings')
 django.setup()
@@ -60,6 +65,12 @@ def create_news(url, category_name):
         body = str(''.join(for_body))
 
         image = str(img_urls_list[i - 1])
+        response = requests.get(str(image))
+        filename = os.path.basename(str(image))
+        file_path = f'C:/Users/qwert/python_projects/project_news/media/news/images/{filename}'
+        filename = f"news/images/{filename}"
+        with open(file_path, 'wb') as file:
+            file.write(response.content)
         category = str(name)
 
         i += 1
@@ -68,7 +79,7 @@ def create_news(url, category_name):
                 title=title,
                 slug=slug,
                 body=body,
-                image=image,
+                image=filename,
                 category=name,
                 status='PB',
                 author=author_name
@@ -78,4 +89,7 @@ def create_news(url, category_name):
             print(f"not_add-{title}")
             continue
 
-create_news(category_name="jamiyat", url='jamiyat')
+
+# create_news(category_name="fan-texnika", url='texnologiya')
+
+
