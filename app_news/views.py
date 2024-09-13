@@ -1,8 +1,9 @@
 from datetime import time
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
-from django.views.generic import TemplateView, DetailView, ListView
-from .forms import ContactForm
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
+from django.views.generic import TemplateView, DetailView, ListView, UpdateView, CreateView
+from .forms import ContactForm, EditNewsForm
 from .models import News, Categories
 
 
@@ -113,6 +114,42 @@ class NewsList(ListView):
             'news_list__all': news_list__all
         })
         return context
+
+
+class EditNews(UpdateView):
+    model = News
+    form_class = EditNewsForm
+    template_name = 'editing_pages/edit_delete_news.html'
+    context_object_name = 'news_item'
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if 'delete' in request.POST:
+            self.object.delete()
+            return redirect('home_page')
+        return super().post(request, *args, **kwargs,)
+
+    def get_success_url(self):
+        return reverse('single_page', kwargs={'slug': self.object.slug})
+
+class CreateNewsOne(CreateView):
+    model = News
+    form_class = EditNewsForm
+    template_name = 'editing_pages/create_news.html'
+
+    def get_success_url(self):
+        return reverse('single_page', kwargs={'slug': self.object.slug})
+
+# def create_news(request):
+#     if request.method == 'POST':
+#         # Ensure request.POST and request.FILES are passed correctly
+#         form = EditNewsForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('home_page')  # Replace with your desired redirect
+#     else:
+#         form = EditNewsForm()
+#     return render(request, 'editing_pages/create_news.html', {'form': form})
 
 
 
