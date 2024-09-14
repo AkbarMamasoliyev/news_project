@@ -29,3 +29,6 @@ def user_profile(request):
         'user': user
     }
     return render(request, 'profile/user_profile.html', context)
+
+def user_base(request):
+    return render(request, 'base/user_base.html')

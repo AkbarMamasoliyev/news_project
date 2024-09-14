@@ -33,7 +33,7 @@ class HomePageView(TemplateView):
 
 class SinglePageView(DetailView):
     model = News
-    template_name = 'pages/single_page.html'
+    template_name = 'main_pages/single_page.html'
     context_object_name = 'news_item'
     slug_field = 'slug'
 
@@ -44,7 +44,7 @@ class SinglePageView(DetailView):
 
 
 def error_page_view(request):
-    return render(request, 'pages/404.html')
+    return render(request, 'main_pages/404.html')
 
 
 def ContactPageView(reqeust):
@@ -57,11 +57,11 @@ def ContactPageView(reqeust):
     context = {
         "form": form,
     }
-    return render(reqeust, 'pages/contact.html', context)
+    return render(reqeust, 'main_pages/contact.html', context)
 
 
 class CategoryPageView(TemplateView):
-    template_name = 'pages/category_page.html'
+    template_name = 'main_pages/category_page.html'
 
     def get_context_data(self, *args, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -89,7 +89,7 @@ class CategoryPageView(TemplateView):
 
 class NewsList(ListView):
     model = News
-    template_name = 'pages/all_news__page.html'
+    template_name = 'main_pages/all_news__page.html'
     def get_context_data(self, *args, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         news_item = self.model.objects.all().order_by("-published_time")
