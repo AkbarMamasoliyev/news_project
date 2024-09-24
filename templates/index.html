@@ -1,9 +1,8 @@
 {% load custom_filters %}
-
 <!DOCTYPE html>
 <html>
 <head>
-<title>Home | Page</title>
+<title>Bosh | Sahifa</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -31,15 +30,19 @@
         <div class="header_top">
           <div class="header_top_left">
             <ul class="top_nav">
-              <li><a href="{% url 'home_page' %}">Home</a></li>
-              <li><a href="#">About</a></li>
-              <li><a href="{% url 'contact_page' %}">Contact</a></li>
-              <li><a href="{% url 'admin:index' %}">Admin</a></li>
+              <li><a href="{% url 'home_page' %}">bosh sahifa</a></li>
+              <li><a href="{% url 'contact_page' %}">biz bilan aloqa</a></li>
               <li>
                   {% if user.is_authenticated %}
                     <a href="{% url 'user_profile' %}">Profile</a>
                   {% else %}
                     <a href="{% url 'login' %}">Login</a>
+                  {% endif %}
+              </li>
+              <li>
+                  {% if user.is_authenticated and user.is_superuser %}
+                    <a href="{% url 'admin_list' %}">Admin List</a>
+                    <a href="{% url 'admin:index' %}">Admin</a>
                   {% endif %}
               </li>
             </ul>
@@ -68,8 +71,11 @@
             {% for category in category_list %}
           <li><a href="{% url 'category_page' category.slug %}">{{ category.name }}</a></li>
             {% endfor %}
-          <li><a href="{% url 'contact_page' %}">Contact Us</a></li>
-          <li><a href="{% url 'error_page' %}">404 Page</a></li>
+          <li style="margin-top: 7px; margin-left: 20px">
+            <form method="get" action="{% url 'search_result_page' %}">
+                <input type="search" name="q" class="form-control" placeholder="qidiruv...">
+            </form>
+          </li>
         </ul>
       </div>
     </nav>
@@ -77,7 +83,7 @@
   <section id="newsSection">
     <div class="row">
       <div class="col-lg-12 col-md-12">
-        <div class="latest_newsarea"><a href="{% url 'news_list' %}"><span>Latest News</span></a>
+        <div class="latest_newsarea"><a href="{% url 'news_list' %}"><span>So'ngi Yangiliklar</span></a>
           <ul id="ticker01" class="news_sticker">
               {% for news in latest_news %}
             <li><a href="{% url 'single_page' news.slug %}"><img src="{{ news.image.url }}" alt="">{{ news.title }}</a></li>
@@ -115,14 +121,15 @@
       </div>
       <div class="col-lg-4 col-md-4 col-sm-4">
         <div class="latest_post">
-          <h2><span>Popular news</span></h2>
+          <h2><span>Mashhur Xabarlar</span></h2>
           <div class="latest_post_container">
             <div id="prev-button"><i class="fa fa-chevron-up"></i></div>
             <ul class="latest_postnav">
                 {% for news in popular_news %}
               <li>
                 <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
-                  <div class="media-body"> <a href="{% url 'single_page' news.slug %}" class="catg_title">{{ news.title }}</a> </div>
+                  <div class="media-body"> <a href="{% url 'single_page' news.slug %}" class="catg_title">{{ news.title }}</a>
+                  </div>
                 </div>
               </li>
                {% endfor %}
@@ -143,7 +150,9 @@
               <ul class="business_catgnav  wow fadeInDown">
                 <li>
                   <figure class="bsbig_fig"> <a href="{% url 'single_page' uzbekiston_main.slug %}" class="featured_img"> <img alt="" src="{{ uzbekiston_main.image.url }}"> <span class="overlay"></span> </a>
-                    <figcaption> <a href="{% url 'single_page' uzbekiston_main.slug %}">{{ uzbekiston_main.title }}</a> </figcaption>
+                    <figcaption>
+                        <a href="{% url 'single_page' uzbekiston_main.slug %}">{{ uzbekiston_main.title }}</a>
+                    </figcaption>
                     <p>{{ uzbekiston_main.body | cut_until_dot}}</p>
                   </figure>
                 </li>
@@ -154,7 +163,9 @@
                   {% for news in uzbekiston_side %}
                 <li>
                   <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
-                    <div class="media-body"> <a href="{% url 'single_page' news.slug %}" class="catg_title">{{ news.title }}</a> </div>
+                    <div class="media-body"> <a href="{% url 'single_page' news.slug %}" class="catg_title">{{ news.title }}</a> 
+                        <span style="font-size: 13px">{{ news.category | capfirst }} | {{ news.published_time | date:'H:i / d.m.Y' }}</span>
+                    </div>
                   </div>
                 </li>
                 {% endfor %}
@@ -261,9 +272,7 @@
           </div>
           <div class="single_sidebar">
             <ul class="nav nav-tabs" role="tablist">
-              <li role="presentation" class="active"><a href="#category" aria-controls="home" role="tab" data-toggle="tab">Category</a></li>
-              <li role="presentation"><a href="#video" aria-controls="profile" role="tab" data-toggle="tab">Video</a></li>
-              <li role="presentation"><a href="#comments" aria-controls="messages" role="tab" data-toggle="tab">Comments</a></li>
+              <li role="presentation" class="active"><a href="#category" aria-controls="home" role="tab" data-toggle="tab">Kategoriyalar</a></li>
             </ul>
             <div class="tab-content">
               <div role="tabpanel" class="tab-pane active" id="category">
@@ -273,57 +282,7 @@
                     {% endfor %}
                 </ul>
               </div>
-              <div role="tabpanel" class="tab-pane" id="video">
-                <div class="vide_area">
-                  <iframe width="100%" height="250" src="http://www.youtube.com/embed/h5QWbURNEpA?feature=player_detailpage" frameborder="0" allowfullscreen></iframe>
-                </div>
-              </div>
-              <div role="tabpanel" class="tab-pane" id="comments">
-                <ul class="spost_nav">
-                  <li>
-                    <div class="media wow fadeInDown"> <a href="main_pages/single_page.html" class="media-left"> <img alt="" src="../static/images/post_img1.jpg"> </a>
-                      <div class="media-body"> <a href="main_pages/single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 1</a> </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="media wow fadeInDown"> <a href="main_pages/single_page.html" class="media-left"> <img alt="" src="../static/images/post_img2.jpg"> </a>
-                      <div class="media-body"> <a href="main_pages/single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 2</a> </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="media wow fadeInDown"> <a href="main_pages/single_page.html" class="media-left"> <img alt="" src="../static/images/post_img1.jpg"> </a>
-                      <div class="media-body"> <a href="main_pages/single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 3</a> </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="media wow fadeInDown"> <a href="main_pages/single_page.html" class="media-left"> <img alt="" src="../static/images/post_img2.jpg"> </a>
-                      <div class="media-body"> <a href="main_pages/single_page.html" class="catg_title"> Aliquam malesuada diam eget turpis varius 4</a> </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
             </div>
-          </div>
-          <div class="single_sidebar wow fadeInDown">
-            <h2><span>Sponsor</span></h2>
-            <a class="sideAdd" href="#"><img src="../static/images/add_img.jpg" alt=""></a> </div>
-          <div class="single_sidebar wow fadeInDown">
-            <h2><span>Category Archive</span></h2>
-            <select class="catgArchive">
-              <option>Select Category</option>
-               {% for category in category_list %}
-              <option>{{ category.name | capfirst}}</option>
-               {% endfor %}
-            </select>
-          </div>
-          <div class="single_sidebar wow fadeInDown">
-            <h2><span>Links</span></h2>
-            <ul>
-              <li><a href="#">Blog</a></li>
-              <li><a href="#">Rss Feed</a></li>
-              <li><a href="#">Login</a></li>
-              <li><a href="#">Life &amp; Style</a></li>
-            </ul>
           </div>
         </aside>
       </div>
@@ -339,16 +298,11 @@
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4">
           <div class="footer_widget wow fadeInDown">
-            <h2>Tag</h2>
+            <h2>Kategoriya</h2>
             <ul class="tag_nav">
-              <li><a href="#">Games</a></li>
-              <li><a href="#">Sports</a></li>
-              <li><a href="#">Fashion</a></li>
-              <li><a href="#">Business</a></li>
-              <li><a href="#">Life &amp; Style</a></li>
-              <li><a href="#">Technology</a></li>
-              <li><a href="#">Photo</a></li>
-              <li><a href="#">Slider</a></li>
+                {% for category in category_list %}
+              <li><a href="{% url 'category_page' category.slug %}">{{ category.name | capfirst }}</a></li>
+                {% endfor %}
             </ul>
           </div>
         </div>

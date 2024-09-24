@@ -8,6 +8,7 @@ django = "*"
 pillow = "*"
 bs4 = "*"
 requests = "*"
+django-hitcount = "*"
 
 [dev-packages]
 

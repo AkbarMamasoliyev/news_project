@@ -3,18 +3,22 @@
 {% block title %} Ro'yxatdan O'tish | Sahifasi {% endblock %}
 
 {% block content %}
-    <div style="margin-bottom: 20px">
-{#        {% if user.is_authenticated %}#}
-{#            <h3>Siz allaqachon tizimga kirgansiz! <a href="{% url 'user_profile' %}" style="margin-left: 15px; font-size: 15px; color: #D083CF">foydalanuvchi sahifasi</a></h3>#}
-{#        {% else %}#}
-            <h3>Saytda ro'yxatda o'tish</h3>
-            <form action="#" method="post" class="contact_form">{% csrf_token %}
-                {{ form.as_p }}
-                <div style="display: flex">
-                    <input type="submit" value="ro'yxatdan o'tish">
-                    <p style="margin-left: 10px">yoki <a href="{% url 'login' %}" style="margin-left: 15px; color: #D083CF; font-size: 15px">kirish</a></p>
+    <div class="col-lg-8 col-md-8 col-sm-8">
+         <div class="left_content">
+            <div style="margin-bottom: 20px">
+                    {% if user.is_authenticated %}
+                        <h3>Siz allaqachon tizimga kirgansiz! <a href="{% url 'user_profile' %}" style="margin-left: 15px; font-size: 15px; color: #D083CF">foydalanuvchi sahifasi</a></h3>
+                    {% else %}
+                        <h3>Saytda ro'yxatdan o'tish</h3>
+                        <form action="#" method="post" class="contact_form">{% csrf_token %}
+                            {{ form.as_p }}
+                            <div style="display: flex">
+                                <input type="submit" value="ro'yxatdan o'tish">
+                                <p style="margin-left: 10px">yoki <a href="{% url 'login' %}" style="margin-left: 15px; color: #D083CF; font-size: 15px">kirish</a></p>
+                            </div>
+                        </form>
+                    {% endif %}
                 </div>
-            </form>
-{#        {% endif %}#}
-    </div>
+        </div>
+      </div>
 {% endblock %}

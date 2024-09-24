@@ -1,16 +1,10 @@
-import time, requests, django, os, io, hashlib, uuid
+import requests, django, os
 
-from bs4 import BeautifulSoup
 from django.shortcuts import get_object_or_404
 from django.utils.text import slugify
 from django.db import IntegrityError
-from django.utils import timezone
-from  datetime import date
-from PIL import Image
-from pathlib import Path
-from django.core.files.temp import NamedTemporaryFile
-from django.core.files import File
 
+from bs4 import BeautifulSoup
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project_news.settings')
 django.setup()

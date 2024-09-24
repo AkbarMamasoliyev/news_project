@@ -3,7 +3,9 @@
 {% block title %} Login | Sahifasi {% endblock %}
 
 {% block content %}
-    <div style="margin-bottom: 20px">
+    <div class="col-lg-8 col-md-8 col-sm-8">
+         <div class="left_content">
+            <div style="margin-bottom: 20px">
                      {% if user.is_authenticated %}
                         <h3>Foydalanuvchi allaqachon tizimga kirgan <a href="{% url 'user_profile' %}" style="font-size: 15px; margin-left: 20px; color: #D083CF">foydalanuchi sahifasi</a></h3>
                      {% else %}
@@ -12,7 +14,10 @@
                          {% csrf_token %}
                          {{ form.as_p }}
                          <input type="submit" value="login">
+                         <a href="{% url 'user_register' %}" style="margin-left: 20px; color: #D083CF">ro'yxatdan o'tish</a>
                      </form>
                     {% endif %}
                 </div>
+        </div>
+      </div>
 {% endblock %}

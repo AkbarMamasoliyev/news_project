@@ -1,25 +1,132 @@
 {% extends 'base/user_base.html' %}
 {% load static %}
 {% block title %} Foydalanuvchi | Sahifasi {% endblock %}
+
+{% block head %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .profile-container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+        }
+        .profile-info {
+            margin-left: 30px;
+            flex: 1;
+        }
+        .profile-image {
+            margin-left: 30px;
+            margin-right: 30px;
+        }
+        .profile-image img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .profile-header h1 {
+            margin-bottom: 10px;
+        }
+        .profile-header p {
+            color: #888;
+            margin-bottom: 20px;
+        }
+        .profile-details dt {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .profile-details dd {
+            margin-bottom: 20px;
+        }
+        .edit-button {
+            margin-top: 30px;
+        }
+        .edit-button a {
+            text-decoration: none;
+            background-color: #D083CF;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: 1px;
+            margin-right: 10px;
+        }
+        .edit-button a:hover {
+            background-color: #FFFFFF;
+            border-style: solid;
+            border-color: #D083CF;
+            color: #D083CF;
+        }
+        .edit-button form {
+            margin-top: 30px;
+        }
+        .edit-button form button {
+            text-decoration: none;
+            background-color: #D083CF;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: 1px;
+            margin-right: 10px;
+        }
+        .edit-button form button:hover {
+            background-color: #FFFFFF;
+            border-style: solid;
+            border-color: #D083CF;
+            color: #D083CF;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
-    <div style="margin-bottom: 20px">
-        {% if user.is_authenticated %}
-            <h3>Profile information</h3>
-            <ul>
-            <li  style="margin-top: 20px"><label for="name">username:</label> <input value="{{ user.username }}" readonly></li>
-            <li  style="margin-top: 20px"><label for="name">email:</label> <input value="{{ user.email }}" readonly></li>
-            <li  style="margin-top: 20px"><label for="name">first name:</label> <input value="{{ user.first_name }}" readonly></li>
-            <li  style="margin-top: 20px"><label for="name">last name</label> <input value="{{ user.last_name }}" readonly></li>
-        </ul>
-            <div style="display: flex; gap: 15px; margin-top: 20px">
-        <form method="post" action="{% url 'logout' %}"> {% csrf_token %}
-            <button type="submit" style="color: white; background-color: #D083CF; border: none">Logout</button>
-        </form>
-        <button style="background-color: #D083CF; border: none"><a href="{% url 'password_change' %}" style="color: white">change password</a></button>
-        
-    </div>
-        {% else %}
-            <h3>Foydalanuvchi topilmadi <a href="{% url 'login' %}" style="margin-left: 20px; color: #D083CF; font-size: 15px">login sahifasi</a></h3>
-        {% endif %}
+    <div class="profile-container">
+        <div class="profile-info">
+            <div class="profile-header">
+                <h1>{{ user.username }}</h1>
+                <p>{{ user.email }}</p>
+            </div>
+            <div class="profile-details">
+                <dl>
+                    <dt>Name:</dt>
+                    <dd>{{ user.first_name | default:"*ismi" }}</dd>
+
+                    <dt>Username:</dt>
+                    <dd>{{ user.username | default:"*username" }}</dd>
+
+                    <dt>Email:</dt>
+                    <dd>{{ user.email | default:"*email" }}</dd>
+
+                    <dt>Date of Birthday:</dt>
+                    <dd>{{ profile.date_of_birthday | default:"*to'g'ilgan sanasi" }}</dd>
+                </dl>
+            </div>
+            <div class="edit-button">
+                <a href="{% url 'user_edit' %}">tahrirlash</a>
+                <a href="{% url 'password_change' %}">parolni o'zgartirish</a>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">tizimdan chiqish</button>
+                </form>
+            </div>
+        </div>
+        <div class="profile-image">
+            {% if profile.user_profile_photo %}
+                <img src="{{ profile.user_profile_photo.url }}" alt="Profile Image">
+            {% else %}
+                <img src="{% static 'images/default_profile.jpg' %}" alt="Default Profile Image">
+            {% endif %}
+            <div class="logout-button">
+                
+            </div>
+        </div>
     </div>
 {% endblock %}

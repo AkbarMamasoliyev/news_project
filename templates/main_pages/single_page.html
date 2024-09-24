@@ -1,56 +1,59 @@
 {% extends 'base/news_base.html' %}
+{% load hitcount_tags %}
 
-{% block title %} {{ news_item.title }} | Sahifasi {% endblock %}
+{% block title %}{{ news_item.title }} | Sahifasi{% endblock %}
 
 {% block content %}
-          <div class="col-lg-8 col-md-8 col-sm-8">
+      <div class="col-lg-8 col-md-8 col-sm-8">
         <div class="left_content">
           <div class="single_page">
             <ol class="breadcrumb">
-              <li><a href="{% url 'home_page' %}">Home</a></li>
+              <li><a href="{% url 'home_page' %}">Bosh sahifa</a></li>
               <li><a href="{% url 'category_page' news_item.category.slug %}">{{ news_item.category.name | capfirst }}</a></li>
             </ol>
             <h1>{{ news_item.title }}</h1>
-            <div class="post_commentbox"> <a href="#"><i class="fa fa-user"></i>{{ news_item.author | capfirst }}</a> <span><i class="fa fa-calendar"></i>{{ news_item.published_time | date:'H:i / Y.m.d' }}</span> <a href="{% url 'category_page' news_item.category.slug %}"><i class="fa fa-tags"></i>{{ news_item.category | capfirst }}</a> </div>
+            <div class="post_commentbox"> <a href=""><i class="fa fa-user"></i>{{ news_item.author | capfirst }}</a> <span><i class="fa fa-calendar"></i>{{ news_item.published_time | date:'H:i / Y.m.d' }}</span> <a href="{% url 'category_page' news_item.category.slug %}"><i class="fa fa-list"></i>{{ news_item.category | capfirst }}</a> <span><i class="fa fa-eye"></i>{% get_hit_count for news_item %}</span> </div>
             <div class="single_page_content"> <img class="img-center" src="{{ news_item.image.url }}" alt="">
               <p>{{ news_item.body }}</p>
-              <blockquote> Donec volutpat nibh sit amet libero ornare non laoreet arcu luctus. Donec id arcu quis mauris euismod placerat sit amet ut metus. Sed imperdiet fringilla sem eget euismod. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Pellentesque adipiscing, neque ut pulvinar tincidunt, est sem euismod odio, eu ullamcorper turpis nisl sit amet velit. Nullam vitae nibh odio, non scelerisque nibh. Vestibulum ut est augue, in varius purus. </blockquote>
-              <ul>
-                <li>Nullam vitae nibh odio, non scelerisque nibh</li>
-                <li>Nullam vitae nibh odio, non scelerisque nibh</li>
-                <li>Nullam vitae nibh odio, non scelerisque nibh</li>
-                <li>Nullam vitae nibh odio, non scelerisque nibh</li>
-                <li>Nullam vitae nibh odio, non scelerisque nibh</li>
-                <li>Nullam vitae nibh odio, non scelerisque nibh</li>
-              </ul>
-              <h2>This is h2 title</h2>
-              <h3>This is h3 title</h3>
-              <h4>This is h4 title</h4>
-              <h5>This is h5 title</h5>
-              <h6>This is h6 Title</h6>
-              <button class="btn default-btn">Default</button>
-              <button class="btn btn-red">Red Button</button>
-              <button class="btn btn-yellow">Yellow Button</button>
-              <button class="btn btn-green">Green Button</button>
-              <button class="btn btn-black">Black Button</button>
-              <button class="btn btn-orange">Orange Button</button>
-              <button class="btn btn-blue">Blue Button</button>
-              <button class="btn btn-lime">Lime Button</button>
-              <button class="btn btn-theme">Theme Button</button>
+                    <div class="comments" style="margin-bottom: 15px">
+                    {% if news_item.comments.exists %}
+                        <h3>Kommentariyalar ({{ comments_count }})</h3>
+                        <ul>
+                            {% for comment in comments %}
+                                <li>
+                                    <strong>{{ comment.user }}</strong> - {{ comment.created_time | date:"d M Y, H:i" }}
+                                    <p>{{ comment.body }}</p>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <h3>Hozircha kommentariya yo'q</h3>
+                    {% endif %}
+                </div>
+                {% if user.is_authenticated %}
+                    <div class="contact_area">
+                    <h4>Kommentariya qoldirish:</h4>
+                    <form class="contact_form" action="" method="post">{% csrf_token %}
+                        {{ comment_form.as_p }}
+                        <input type="submit" value="saqlash">
+                    </form>
+                </div>
+                {% else %}
+                    <h3 style="color: #333333">Kommentariya qoldirish uchun <a href="{% url 'login' %}?next={{ request.path }}" style="color: #D083CF">tizimga kiring</a> yoki <a href="{% url 'user_register' %}?next={{ request.path }}" style="color: #D083CF">ro'yxatdan o'ting</a></h3>
+                {% endif %}
             </div>
             <div class="social_link">
               <ul class="sociallink_nav">
-                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                <li><a href="https://www.facebook.com/kunuznews/"><i class="fa fa-facebook"></i></a></li>
+                <li><a href="https://twitter.com/KunUzNews"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="https://www.instagram.com/kun.uz"><i class="fa fa-instagram"></i></a></li>
+                <li><a href="https://www.youtube.com/@kunuz_official"><i class="fa fa-youtube"></i></a></li>
               </ul>
             </div>
             <div class="related_post">
               <h2>Related Post <i class="fa fa-thumbs-o-up"></i></h2>
               <ul class="spost_nav wow fadeInDown animated">
-                  {% for news in single__related %}
+                  {% for news in single_related %}
                 <li>
                   <div class="media"> <a class="media-left" href="{% url 'single_page' news.slug %}"> <img src="{{ news.image.url }}" alt=""> </a>
                     <div class="media-body"> <a class="catg_title" href="single_page.html">{{ news.title }}</a> </div>
@@ -62,13 +65,4 @@
           </div>
         </div>
       </div>
-      <nav class="nav-slit"> <a class="prev" href="#"> <span class="icon-wrap"><i class="fa fa-angle-left"></i></span>
-        <div>
-          <h3>City Lights</h3>
-          <img src="../../static/images/post_img1.jpg" alt=""/> </div>
-        </a> <a class="next" href="#"> <span class="icon-wrap"><i class="fa fa-angle-right"></i></span>
-        <div>
-          <h3>Street Hills</h3>
-          <img src="../../static/images/post_img1.jpg" alt=""/> </div>
-        </a> </nav>
 {% endblock %}

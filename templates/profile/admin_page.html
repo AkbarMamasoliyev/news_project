@@ -1,0 +1,27 @@
+{% extends 'base/user_base.html' %}
+
+{% block title %}Adminstratorlar ro'yxati{% endblock %}
+
+{% block content %}
+    <div class="col-lg-8 col-md-8 col-sm-8">
+        <div class="left_content">
+            <h3>Barcha adminstratorlar:</h3>
+            <div class="">
+            <table class="table table-bordered table-responsive table-striped">
+                <tr>
+                    <th>Username</th>
+                    <th>Ismi</th>
+                    <th>Pochta manzili</th>
+                </tr>
+                {% for user in admins_list %}
+                <tr>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.first_name }}</td>
+                    <td>{{ user.email }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        </div>
+    </div>
+{% endblock %}

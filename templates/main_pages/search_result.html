@@ -1,0 +1,39 @@
+{% extends 'base/news_base.html' %}
+
+{% block title %}{{ query }} | qidiruv natijalari{% endblock %}
+
+{% block content %}
+    <div class="col-lg-8 col-md-8 col-sm-8">
+        <div class="left_content">
+          <div class="single_post_content">
+            <h2><span>'{{ query }}' so'zi bo'yicha qidiruv natijalari</span></h2>
+            {% if search_result %}
+                <div class="single_post_content_left">
+                  <ul class="spost_nav">
+                    {% for news in first %}
+                      <li>
+                        <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
+                          <div class="media-body"> <a href="{% url 'single_page' news.slug %}" class="catg_title">{{ news.title }}</a> </div>
+                        </div>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+                <div class="single_post_content_right">
+              <ul class="spost_nav">
+                  {% for news in second %}
+                <li>
+                  <div class="media wow fadeInDown"> <a href="{% url 'single_page' news.slug %}" class="media-left"> <img alt="" src="{{ news.image.url }}"> </a>
+                    <div class="media-body"> <a href="{% url 'single_page' news.slug %}" class="catg_title">{{ news.title }}</a> </div>
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% else %}
+                <h4>so'rov bo'yicha hech narsa topilmadi...</h4>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+{% endblock %}

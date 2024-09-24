@@ -17,6 +17,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'assets/css/style.css' %}">
 <script src="{% static 'assets/js/html5shiv.min.js' %}"></script>
 <script src="{% static 'assets/js/respond.min.js' %}"></script>
+{% block head %} {% endblock %}
 </head>
 <body>
 <div id="preloader">
@@ -30,15 +31,19 @@
         <div class="header_top">
           <div class="header_top_left">
             <ul class="top_nav">
-              <li><a href="{% url 'home_page' %}">Home</a></li>
-              <li><a href="#">About</a></li>
-              <li><a href="{% url 'contact_page' %}">Contact</a></li>
-              <li><a href="{% url 'admin:index' %}">Admin</a></li>
+              <li><a href="{% url 'home_page' %}">bosh sahifa</a></li>
+              <li><a href="{% url 'contact_page' %}">biz bilan aloqa</a></li>
               <li>
                   {% if user.is_authenticated %}
                     <a href="{% url 'user_profile' %}">Profile</a>
                   {% else %}
                     <a href="{% url 'login' %}">Login</a>
+                  {% endif %}
+              </li>
+              <li>
+                  {% if user.is_authenticated and user.is_superuser %}
+                    <a href="{% url 'admin_list' %}">Admin List</a>
+                    <a href="{% url 'admin:index' %}">Admin</a>
                   {% endif %}
               </li>
             </ul>
@@ -67,8 +72,11 @@
            {% for category in category_list %}
           <li><a href="{% url 'category_page' category.slug %}">{{ category.name }}</a></li>
            {% endfor %}
-          <li><a href="{% url 'contact_page' %}">Contact Us</a></li>
-          <li><a href="{% url 'error_page' %}">404 Page</a></li>
+          <li style="margin-top: 7px; margin-left: 20px">
+            <form method="get" action="{% url 'search_result_page' %}">
+                <input type="search" name="q" class="form-control" placeholder="qidiruv...">
+            </form>
+          </li>
         </ul>
       </div>
     </nav>
@@ -76,7 +84,7 @@
   <section id="newsSection">
     <div class="row">
       <div class="col-lg-12 col-md-12">
-        <div class="latest_newsarea"><a href="{% url 'news_list' %}"><span>Latest News</span></a>
+        <div class="latest_newsarea"><a href="{% url 'news_list' %}"><span>So'ngi Yangiliklar</span></a>
           <ul id="ticker01" class="news_sticker">
              {% for news in latest_news %}
             <li><a href="{% url 'single_page' news.slug %}"><img src="{{ news.image.url }}" alt="">{{ news.title }}</a></li>
@@ -84,14 +92,9 @@
           </ul>
           <div class="social_area">
             <ul class="social_nav">
-              <li class="facebook"><a href="#"></a></li>
-              <li class="twitter"><a href="#"></a></li>
-              <li class="flickr"><a href="#"></a></li>
-              <li class="pinterest"><a href="#"></a></li>
-              <li class="googleplus"><a href="#"></a></li>
-              <li class="vimeo"><a href="#"></a></li>
-              <li class="youtube"><a href="#"></a></li>
-              <li class="mail"><a href="#"></a></li>
+              <li class="facebook"><a href="https://www.facebook.com/kunuznews/"></a></li>
+              <li class="twitter"><a href="https://twitter.com/KunUzNews"></a></li>
+              <li class="youtube"><a href="https://www.youtube.com/@kunuz_official"></a></li>
             </ul>
           </div>
         </div>
@@ -100,13 +103,9 @@
   </section>
   <section id="contentSection">
     <div class="row">
-      <div class="col-lg-8 col-md-8 col-sm-8">
-         <div class="left_content">
-            {% block content %}
+        {% block content %}
                 
-            {% endblock %}
-        </div>
-      </div>
+        {% endblock %}
     </div>
   </section>
   <footer id="footer">
@@ -119,16 +118,11 @@
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4">
           <div class="footer_widget wow fadeInDown">
-            <h2>Tag</h2>
+            <h2>Kategoriya</h2>
             <ul class="tag_nav">
-              <li><a href="#">Games</a></li>
-              <li><a href="#">Sports</a></li>
-              <li><a href="#">Fashion</a></li>
-              <li><a href="#">Business</a></li>
-              <li><a href="#">Life &amp; Style</a></li>
-              <li><a href="#">Technology</a></li>
-              <li><a href="#">Photo</a></li>
-              <li><a href="#">Slider</a></li>
+                {% for category in category_list %}
+              <li><a href="{% url 'category_page' category.slug %}">{{ category.name | capfirst }}</a></li>
+                {% endfor %}
             </ul>
           </div>
         </div>

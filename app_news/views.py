@@ -1,10 +1,13 @@
-from datetime import time
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
-from django.views.generic import TemplateView, DetailView, ListView, UpdateView, CreateView
-from .forms import ContactForm, EditNewsForm
-from .models import News, Categories
+from django.views.generic import TemplateView, ListView, UpdateView, CreateView
+from django.db.models import Q
+from hitcount.views import HitCountDetailView
+
+from project_news.custom_permission import OnlyLoggedSuperUser
+from .forms import ContactForm, EditNewsForm, CommentForm
+from .models import News, Categories, Comment
 
 
 class HomePageView(TemplateView):
@@ -31,16 +34,82 @@ class HomePageView(TemplateView):
         return context
 
 
-class SinglePageView(DetailView):
+class SinglePageView(HitCountDetailView):
     model = News
     template_name = 'main_pages/single_page.html'
     context_object_name = 'news_item'
     slug_field = 'slug'
-
+    count_hit = True
+    context = {}
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["single__related"] = self.model.published.order_by('?')[:3]
+        news_item = self.get_object()
+        comments = Comment.objects.filter(news=news_item, active=True)
+        comments_count = comments.count()
+        comment_form = CommentForm()
+        new_comment = None
+
+        context = {
+            'single_related': self.model.published.order_by('?')[:3],
+            'news_item': news_item,
+            'comments': comments,
+            'new_comment': new_comment,
+            'comments_count': comments_count,
+            'comment_form': comment_form
+        }
         return context
+
+    def post(self, request, *args, **kwargs):
+        news_item = self.get_object()
+        single_related = News.published.order_by('?')[:3]
+        comments = news_item.comments.filter(active=True)
+        comment_count = comments.count()
+        new_comment = None
+        comment_form = CommentForm(data=request.POST)
+
+        if comment_form.is_valid():
+            new_comment = comment_form.save(commit=False)
+            new_comment.news = news_item
+            new_comment.user = request.user
+            new_comment.save()
+            comment_form = CommentForm()
+
+        context = {
+            'news_item': news_item,
+            'single_related': single_related,
+            'comments': comments,
+            'comment_count': comment_count,
+            'new_comment': new_comment,
+            'comment_form': comment_form
+        }
+        return redirect('single_page', slug=news_item.slug,)
+
+def single_detail(request, slug):
+    news_item = get_object_or_404(News, slug=slug, status=News.Status.Published)
+    related_news = News.published.order_by('?')[:3]
+    comments = news_item.comments.filter(active=True)
+    comments_count = comments.count()
+    new_comment = None
+
+    if request.method == 'POST':
+        comment_form = CommentForm(data=request.POST)
+        if comment_form.is_valid():
+            new_comment = comment_form.save(commit=False)
+            new_comment.news = news_item
+            new_comment.user = request.user
+            new_comment.save()
+            return redirect('single_page', slug=news_item.slug)
+    else:
+        comment_form = CommentForm()
+    context = {
+        'news_item': news_item,
+        'single_related': related_news,
+        'comment_count': comments_count,
+        'new_comment': new_comment,
+        'comment_form': comment_form,
+        'comments': comments
+    }
+    return render(request, 'main_pages/single_page.html', context)
 
 
 def error_page_view(request):
@@ -52,7 +121,7 @@ def ContactPageView(reqeust):
 
     if reqeust.method == "POST" and form.is_valid():
         form.save()
-        return HttpResponse("<h2> Message sent")
+        return HttpResponse("<h2> Xabar yuborildi")
 
     context = {
         "form": form,
@@ -116,7 +185,7 @@ class NewsList(ListView):
         return context
 
 
-class EditNews(UpdateView):
+class EditNews(OnlyLoggedSuperUser, UpdateView):
     model = News
     form_class = EditNewsForm
     template_name = 'editing_pages/edit_delete_news.html'
@@ -132,13 +201,14 @@ class EditNews(UpdateView):
     def get_success_url(self):
         return reverse('single_page', kwargs={'slug': self.object.slug})
 
-class CreateNewsOne(CreateView):
+class CreateNewsOne(OnlyLoggedSuperUser, CreateView):
     model = News
     form_class = EditNewsForm
     template_name = 'editing_pages/create_news.html'
 
     def get_success_url(self):
         return reverse('single_page', kwargs={'slug': self.object.slug})
+
 
 # def create_news(request):
 #     if request.method == 'POST':
@@ -152,6 +222,35 @@ class CreateNewsOne(CreateView):
 #     return render(request, 'editing_pages/create_news.html', {'form': form})
 
 
+class SearchResultView(ListView):
+    model = News
+    template_name = 'main_pages/search_result.html'
+    context_object_name = 'search_result'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return self.model.objects.filter(
+                Q(title__icontains=query) | Q(body__icontains=query)
+            )
+        else:
+            return News.objects.none()
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        results = self.get_queryset()
+        index = len(results) // 2
+
+        context['first'] = results[:index]
+        context['second'] = results[index:]
+        context['query'] = self.request.GET.get('q')
+        return context
 
 
-
+# class NewsCountDetailView(HitCountDetailView):
+#     model = News
+#     count_hit = True
+#
+#     def get_object(self, queryset=None):
+#         news_item = News.objects.get(slug=self.kwargs['slug'])
+#         return news_item

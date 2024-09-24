@@ -1,5 +1,5 @@
 from .models import News, Categories
-from datetime import date
+
 
 def common_views(request):
     latest_news = News.published.order_by('-published_time')[:10]

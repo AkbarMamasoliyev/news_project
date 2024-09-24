@@ -1,12 +1,12 @@
 {% extends 'base/news_base.html' %}
-
+{% load custom_filters %}
 {% block title %} Eng So'ngi Yangiliklar | Sahifasi {% endblock %}
 
 {% block content %}
     <div class="col-lg-8 col-md-8 col-sm-8">
         <div class="left_content">
           <div class="single_post_content">
-            <h2><a href="{% url 'category_page' 'uzbekiston' %}"><span>Latest news</span></a></h2>
+            <h2><a href="{% url 'news_list' %}"><span>Latest news</span></a></h2>
             <div class="single_post_content_left">
               <ul class="business_catgnav  wow fadeInDown">
                 <li>

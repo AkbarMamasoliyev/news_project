@@ -1,12 +1,12 @@
 {% extends 'base/news_base.html' %}
 
-{% block title %} Login | Sahifasi {% endblock %}
+{% block title %} Yangilikni tahrirlash | Sahifasi {% endblock %}
 
 {% block content %}
     <div class="col-lg-8 col-md-8 col-sm-8">
         <div class="left_content">
           <div class="contact_area">
-            <h2>Contact Us</h2>
+            <h2>Yangilikni tahrirlash</h2>
               <form action="#" class="contact_form" method="post">
                   {% csrf_token %}
                   {{ form.as_p }}
