@@ -112,8 +112,8 @@ def single_detail(request, slug):
     return render(request, 'main_pages/single_page.html', context)
 
 
-def error_page_view(request):
-    return render(request, 'main_pages/404.html')
+def error_page_view(request, exception):
+    return render(request, '404.html')
 
 
 def ContactPageView(reqeust):
